@@ -22,7 +22,7 @@ export const createMovie = async () => {
 */
 
 export const filterMoviesGen = (arrObj) => {
-    console.log('Entry', arrObj)
+    //console.log('Entry', arrObj)
 
     let uniqueArr = [];
     arrObj.filter((item, index) => {
@@ -31,7 +31,7 @@ export const filterMoviesGen = (arrObj) => {
             uniqueArr.push(gen);
           }
         });
-        console.log('Exit', uniqueArr)
+       // console.log('Exit', uniqueArr)
 
         return uniqueArr;
    

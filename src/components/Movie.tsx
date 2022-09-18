@@ -16,10 +16,10 @@ type movieProps = {
     year: number
 }
 
-export const Movie = ({actors,ageLimit,director,genres,name,rating,synopsis,year}:movieProps) => {
+export const Movie = ({actors,ageLimit,director,genres,name,rating,synopsis,year}:movieProps,key) => {
 
     return(
-        <Grid item xs={2} sm={4} md={4}>
+        <Grid item xs={2} sm={4} md={4} key={key}>
             <Card>
 
                 <CardMedia

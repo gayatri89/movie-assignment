@@ -5,9 +5,7 @@ import { fetchMovies, filterMoviesGen } from "../api/Api";
 import { MovieGenres } from "./MovieGenres";
 import { Box, Container } from "@mui/system";
 
-type inputProps = {
-  inputValue: String;
-};
+
 type movieProps = {
   ageLimit: Number;
   director: { firstName: String; lastName: String };
@@ -22,7 +20,8 @@ type movieProps = {
   synopsis: String;
   year: Number;
 };
-export const MovieList = ({ inputValue }: inputProps) => {
+export const MovieList = (props) => {
+   // console.log('props',props.inputValue)
     
   const [moviesData, setMoviesData] = useState([]);
   const [movieGenres, setMovieGenres] = useState([]);
@@ -39,7 +38,7 @@ export const MovieList = ({ inputValue }: inputProps) => {
             uniqueArr.push(gen);
           }
         });
-        console.log("Exit", uniqueArr);
+        //console.log("Exit", uniqueArr);
         setMovieGenres(uniqueArr);
         return uniqueArr;
       });
@@ -61,7 +60,7 @@ export const MovieList = ({ inputValue }: inputProps) => {
       <Box sx={{ flexGrow: 1 }}>
         <ul>
           {movieGenres.map((item, index) => {
-            console.log(item);
+            //console.log(item);
             return (
               <li>
                 <MovieGenres gen={item} key={index} />
@@ -73,9 +72,11 @@ export const MovieList = ({ inputValue }: inputProps) => {
 
       <Grid container spacing={4}>
         {moviesData
-          //.filter((movieItems: movieProps) => {
-          //  return movieItems.name.toLocaleLowerCase().includes({inputValue});
-          //})
+          .filter((movieItems: movieProps) => {
+             // console.log()
+             
+            return movieItems.name && movieItems.name.toLocaleLowerCase().includes(props.inputValue);
+          })
           .map((value, index) => (
             <Movie {...value} key={index} />
           ))}
