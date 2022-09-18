@@ -1,6 +1,6 @@
 import { type } from "os";
 import Typography from '@mui/material/Typography';
-import { Card, CardContent, Grid, CardMedia } from '@mui/material';
+import { Card, CardContent, Grid, CardMedia, CardHeader, CardActions, IconButton, Rating } from '@mui/material';
 
 type movieProps = {
     actors : [], 
@@ -18,16 +18,31 @@ export const Movie = ({actors,ageLimit,director,genres,name,rating,synopsis,year
     return(
         <Grid item xs={2} sm={4} md={4}>
             <Card>
+
                 <CardMedia
                     component="img"
                     height="140"
                     image={`https://dummyimage.com/140x300/ded1de&text=${name}`}
-                    alt="green iguana"
+                    alt=""
                 />
+                     
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">{name}</Typography>
-                    <Typography variant="body2" color="text.secondary">{synopsis}</Typography>
+                    <Typography variant="h6" gutterBottom>{name}</Typography>
+                    <Typography variant="subtitle2" >{`Release Year: ${year}`}</Typography>
+                    <Typography variant="button" display="block" gutterBottom>{genres.join(', ')}</Typography>
+                    <Rating name="read-only" value={rating} readOnly />
+                    <Typography variant="body2" gutterBottom>
+                        {actors.map((actor,index)=>{
+                            return(<b><i>
+                                { index == actors.length - 1 ? `${actor.firstName +' '+ actor.lastName }` : `${actor.firstName +' '+ actor.lastName }, `}
+                                </i></b>)
+                        })}
+                    </Typography>
+                    <Typography variant="body2" gutterBottom>
+                        <b><i>Directed By: </i></b>{`${director.firstName + ' ' + director.lastName}`}
+                    </Typography>
                 </CardContent>
+                
             </Card>
         </Grid>
     )
