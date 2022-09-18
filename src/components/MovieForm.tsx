@@ -5,12 +5,14 @@ import Input from "@mui/material/Input";
 import FilledInput from "@mui/material/FilledInput";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
+
+//import { fetchMovies, filterMoviesGen } from "../api/Api";
+import { useEffect, useState } from "react";
 
 interface State {
   amount: string;
@@ -21,35 +23,69 @@ interface State {
 }
 
 export function MovieForm() {
-  const [values, setValues] = React.useState<State>({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
+
+    /**  useEffect(() => {
+      console.log('I am inside the movie posts')
+    // POST request using fetch inside useEffect React hook
+    const dummyObj =  {
+        "director": {
+            "firstName": "dummy",
+            "lastName": "Russo"
+        },
+        "name": "Lorem: Endgame",
+        "year": 2018,
+        "genres": [
+            "Adventure",
+            "Sci-fi"
+        ],
+        "ageLimit": 12,
+        "rating": 4,
+        "actors": [
+            {
+                "firstName": "Robert",
+                "lastName": " Downey Jr."
+            },
+            {
+                "firstName": "Chris",
+                "lastName": "Evans"
+            },
+            {
+                "firstName": "Scarlett",
+                "lastName": "Johansson"
+            }
+        ],
+        "synopsis":"lorem ipsum"
+    }
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dummyObj),
+    };
+    fetch("http://localhost:3002/api/movies", requestOptions)
+      .then((response) => response.json())
+      /** .then((data) => setPostId(data.id)); */
+
+    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+  //}, []); */
+
+  const [values, setValues] = useState({
+    name: "",
+    year: "",
+    genres: "",
+    ageLimit: "",
+    rating: '',
+    actors: '',
+    director: '',
+    synopsis: ''
   });
 
-  const handleChange =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  const handleChange = () => {
+      console.log('onchange')
+  }
 
   return (
     <Container maxWidth="md" component="main">
-      <Box sx={{ display: "flex", flexWrap: "wrap" , m:2}} >
+      <Box sx={{ display: "flex", flexWrap: "wrap", m: 2 }}>
         <Typography variant="h5" component="h5">
           Add New Movie
         </Typography>
@@ -57,62 +93,38 @@ export function MovieForm() {
       <Box sx={{ display: "flex", flexWrap: "wrap" }}>
         <div>
           <TextField
-            label="With normal TextField"
+            label="Movie Name"
             id="outlined-start-adornment"
             sx={{ m: 1, width: "25ch" }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">kg</InputAdornment>
-              ),
-            }}
           />
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
             <OutlinedInput
-              id="outlined-adornment-weight"
-              value={values.weight}
-              onChange={handleChange("weight")}
-              endAdornment={<InputAdornment position="end">kg</InputAdornment>}
-              aria-describedby="outlined-weight-helper-text"
-              inputProps={{
-                "aria-label": "weight",
-              }}
+              id="outlined-adornment-year"
+              value=''
+              aria-describedby="outlined-year-helper-text"
             />
-            <FormHelperText id="outlined-weight-helper-text">
-              Weight
+            <FormHelperText id="outlined-year-helper-text">
+              Year
             </FormHelperText>
           </FormControl>
+
           <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">
-              Password
+              Genres
             </InputLabel>
             <OutlinedInput
-              id="outlined-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              onChange={handleChange("password")}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  ></IconButton>
-                </InputAdornment>
-              }
+              id="outlined-adornment-genres"
+              type="text"
+              value=''
               label="Password"
             />
           </FormControl>
           <FormControl fullWidth sx={{ m: 1 }}>
             <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
             <OutlinedInput
-              id="outlined-adornment-amount"
-              value={values.amount}
-              onChange={handleChange("amount")}
-              startAdornment={
-                <InputAdornment position="start">$</InputAdornment>
-              }
-              label="Amount"
+              id="outlined-adornment-ageLimit"
+              value=''
+              label="ageLimit"
             />
           </FormControl>
         </div>
@@ -121,58 +133,33 @@ export function MovieForm() {
             label="With normal TextField"
             id="filled-start-adornment"
             sx={{ m: 1, width: "25ch" }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">kg</InputAdornment>
-              ),
-            }}
             variant="filled"
+            value=''
           />
           <FormControl sx={{ m: 1, width: "25ch" }} variant="filled">
             <FilledInput
-              id="filled-adornment-weight"
-              value={values.weight}
-              onChange={handleChange("weight")}
-              endAdornment={<InputAdornment position="end">kg</InputAdornment>}
-              aria-describedby="filled-weight-helper-text"
-              inputProps={{
-                "aria-label": "weight",
-              }}
+              id="filled-adornment-actors"
+              value={values.actors}
+              aria-describedby="filled-actors-helper-text"
             />
-            <FormHelperText id="filled-weight-helper-text">
-              Weight
+            <FormHelperText id="filled-director-helper-text">
+              Actors
             </FormHelperText>
           </FormControl>
           <FormControl sx={{ m: 1, width: "25ch" }} variant="filled">
-            <InputLabel htmlFor="filled-adornment-password">
-              Password
+            <InputLabel htmlFor="filled-adornment-director">
+              Director
             </InputLabel>
             <FilledInput
               id="filled-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              onChange={handleChange("password")}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  ></IconButton>
-                </InputAdornment>
-              }
-            />
+              type="text"
+              value='' />
           </FormControl>
           <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-            <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
+            <InputLabel htmlFor="filled-adornment-synopsis">synopsis</InputLabel>
             <FilledInput
-              id="filled-adornment-amount"
-              value={values.amount}
-              onChange={handleChange("amount")}
-              startAdornment={
-                <InputAdornment position="start">$</InputAdornment>
-              }
+              id="filled-adornment-synopsis"
+              value=''
             />
           </FormControl>
         </div>
@@ -181,23 +168,13 @@ export function MovieForm() {
             label="With normal TextField"
             id="standard-start-adornment"
             sx={{ m: 1, width: "25ch" }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">kg</InputAdornment>
-              ),
-            }}
             variant="standard"
           />
           <FormControl variant="standard" sx={{ m: 1, mt: 3, width: "25ch" }}>
             <Input
               id="standard-adornment-weight"
-              value={values.weight}
-              onChange={handleChange("weight")}
-              endAdornment={<InputAdornment position="end">kg</InputAdornment>}
-              aria-describedby="standard-weight-helper-text"
-              inputProps={{
-                "aria-label": "weight",
-              }}
+              value=''
+                        
             />
             <FormHelperText id="standard-weight-helper-text">
               Weight
@@ -209,31 +186,10 @@ export function MovieForm() {
             </InputLabel>
             <Input
               id="standard-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              onChange={handleChange("password")}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  ></IconButton>
-                </InputAdornment>
-              }
+              type="text"
             />
           </FormControl>
-          <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
-            <Input
-              id="standard-adornment-amount"
-              value={values.amount}
-              onChange={handleChange("amount")}
-              startAdornment={
-                <InputAdornment position="start">$</InputAdornment>
-              }
-            />
-          </FormControl>
+         
         </div>
       </Box>
     </Container>

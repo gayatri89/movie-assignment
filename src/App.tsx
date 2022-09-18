@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { MovieList } from "./components/MovieList";
 import { Button, Container, Grid, Icon } from "@mui/material";
@@ -11,15 +10,6 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Link, BrowserRouter, Route, Routes } from "react-router-dom";
-import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
-
-function HomeIcon(props: SvgIconProps) {
-  return (
-    <SvgIcon {...props}>
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </SvgIcon>
-  );
-}
 
 function App() {
   const [inputValue, setInputValue] = useState("");
@@ -45,7 +35,7 @@ function App() {
             </Typography>
 
             <MovieFilter value={inputValue} setInputValue={setInputValue} />
-            <Link to="/create-movie">+</Link>
+            <Link to="/create-movie">Add movie</Link>
           </Toolbar>
         </Container>
       </AppBar>
