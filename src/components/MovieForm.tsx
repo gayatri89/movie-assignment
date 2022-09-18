@@ -8,23 +8,33 @@ import InputLabel from "@mui/material/InputLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 
-//import { fetchMovies, filterMoviesGen } from "../api/Api";
+import { createMovie } from "../api/Api";
 import { useEffect, useState } from "react";
 
-interface State {
-  amount: string;
-  password: string;
-  weight: string;
-  weightRange: string;
-  showPassword: boolean;
-}
+type State = {
+  director: {
+    firstName: string;
+    lastName: string;
+  };
+  name: string;
+  year: number;
+  genres: [];
+  ageLimit: number;
+  rating: number;
+  actors: [
+    {
+      firstName: string;
+      lastName: string;
+    }
+  ];
+  synopsis: string;
+};
 
 export function MovieForm() {
-
-    /**  useEffect(() => {
+  /**  useEffect(() => {
       console.log('I am inside the movie posts')
     // POST request using fetch inside useEffect React hook
     const dummyObj =  {
@@ -65,23 +75,87 @@ export function MovieForm() {
       .then((response) => response.json())
       /** .then((data) => setPostId(data.id)); */
 
-    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+  // empty dependency array means this effect will only run once (like componentDidMount in classes)
   //}, []); */
 
-  const [values, setValues] = useState({
+  let [data, setData] = useState({
     name: "",
     year: "",
-    genres: "",
+    genres: [],
     ageLimit: "",
-    rating: '',
-    actors: '',
-    director: '',
-    synopsis: ''
+    rating: "",
+    actors: [
+      {
+        firstName: "",
+        lastName: "",
+      },
+    ],
+    director: {
+      firstName: "",
+      lastName: "",
+    },
+    synopsis: "",
   });
 
-  const handleChange = () => {
-      console.log('onchange')
-  }
+  let [moviname, setMoviName] = useState("");
+  let [year, setYear] = useState("");
+  let [genres, setGenres] = useState('');
+  let [ageLimit, setAgeLimit] = useState("");
+  let [rating, setRating] = useState("");
+  let [actorFirstname, setActorFirstName] = useState("");
+  let [actorLastname, setActorLastName] = useState("");
+  let [directorFirstname, setDirectorFirstName] = useState("");
+  let [directorLastname, setDirectorLastName] = useState("");
+  let [synopsis, setSynopsis] = useState("");
+  let [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setData({ 
+        name: moviname,
+        year: year,
+        genres: [genres],
+        ageLimit: ageLimit,
+        rating: rating,
+        actors: [
+          {
+            firstName: actorFirstname,
+            lastName: actorLastname,
+          },
+        ],
+        director: {
+          firstName: directorFirstname,
+          lastName: directorLastname,
+        },
+        synopsis: synopsis,
+      })
+    console.log("submitting...", data);
+      try {
+        const response = await createMovie(data)
+        console.log('msg',response)
+        if (response.status === 'success') {
+            setMoviName("");
+            setYear("");
+            setGenres('');
+            setAgeLimit('');
+            setRating('');
+            setSynopsis('');
+            setActorFirstName('')
+            setActorLastName('');
+            setDirectorFirstName('');
+            setDirectorLastName('');
+            setMessage("Movie created successfully");
+          } else {
+            setMessage("Some error occured");
+          }
+      } catch (err) {
+          console.log(err);
+      }
+    
+    
+
+  };
 
   return (
     <Container maxWidth="md" component="main">
@@ -90,107 +164,112 @@ export function MovieForm() {
           Add New Movie
         </Typography>
       </Box>
+     
       <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-        <div>
-          <TextField
-            label="Movie Name"
-            id="outlined-start-adornment"
-            sx={{ m: 1, width: "25ch" }}
-          />
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-            <OutlinedInput
-              id="outlined-adornment-year"
-              value=''
-              aria-describedby="outlined-year-helper-text"
-            />
-            <FormHelperText id="outlined-year-helper-text">
-              Year
-            </FormHelperText>
-          </FormControl>
+      <div className="message">{message ? <p>{message}</p> : null}</div>
 
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">
-              Genres
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-genres"
-              type="text"
-              value=''
-              label="Password"
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <div>
+            <TextField
+              label="Movie Name"
+              name="movie-name"
+              onChange={(e) => setMoviName(e.target.value)}
+              value={moviname}
+              sx={{ m: 1, width: "25ch" }}
             />
-          </FormControl>
-          <FormControl fullWidth sx={{ m: 1 }}>
-            <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-ageLimit"
-              value=''
-              label="ageLimit"
+
+            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+              <TextField
+                label="Relesed Year"
+                name="year"
+                onChange={(e) => setYear(e.target.value)}
+                value={year}
+              />
+            </FormControl>
+
+            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+              <TextField
+                label="Genres"
+                name="genres"
+                onChange={(e) => setGenres(e.target.value)}
+              />
+            </FormControl>
+          </div>
+
+          <div>
+            <TextField
+              label="Age Limit"
+              name="age-limit"
+              sx={{ m: 1, width: "25ch" }}
+              onChange={(e) => {
+                setAgeLimit(e.target.value);
+              }}
             />
-          </FormControl>
-        </div>
-        <div>
-          <TextField
-            label="With normal TextField"
-            id="filled-start-adornment"
-            sx={{ m: 1, width: "25ch" }}
-            variant="filled"
-            value=''
-          />
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="filled">
-            <FilledInput
-              id="filled-adornment-actors"
-              value={values.actors}
-              aria-describedby="filled-actors-helper-text"
-            />
-            <FormHelperText id="filled-director-helper-text">
-              Actors
-            </FormHelperText>
-          </FormControl>
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="filled">
-            <InputLabel htmlFor="filled-adornment-director">
-              Director
-            </InputLabel>
-            <FilledInput
-              id="filled-adornment-password"
-              type="text"
-              value='' />
-          </FormControl>
-          <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-            <InputLabel htmlFor="filled-adornment-synopsis">synopsis</InputLabel>
-            <FilledInput
-              id="filled-adornment-synopsis"
-              value=''
-            />
-          </FormControl>
-        </div>
-        <div>
-          <TextField
-            label="With normal TextField"
-            id="standard-start-adornment"
-            sx={{ m: 1, width: "25ch" }}
-            variant="standard"
-          />
-          <FormControl variant="standard" sx={{ m: 1, mt: 3, width: "25ch" }}>
-            <Input
-              id="standard-adornment-weight"
-              value=''
-                        
-            />
-            <FormHelperText id="standard-weight-helper-text">
-              Weight
-            </FormHelperText>
-          </FormControl>
-          <FormControl sx={{ m: 1, width: "25ch" }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-password">
-              Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password"
-              type="text"
-            />
-          </FormControl>
-         
-        </div>
+
+            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+              <TextField
+                label="Rating"
+                name="rating"
+                onChange={(e) => setRating(e.target.value)}
+                value={rating}
+              />
+            </FormControl>
+
+            <FormControl sx={{ m: 1, width: "25ch" }}>
+              <TextField
+                label="Synopsis"
+                name="synopsis"
+                onChange={(e) => setSynopsis(e.target.value)}
+                value={synopsis}
+              />
+            </FormControl>
+
+            <FormControl sx={{ m: 1, width: "38ch" }} variant="outlined">
+              <TextField
+                label="Actor Firstname"
+                name="actor-firstname"
+                onChange={(e) => setActorFirstName(e.target.value)}
+                value={actorFirstname}
+              />
+            </FormControl>
+
+            <FormControl sx={{ m: 1, width: "38ch" }} variant="outlined">
+              <TextField
+                label="Actor Lastname"
+                name="actor-lastname"
+                onChange={(e) => setActorLastName(e.target.value)}
+                value={actorLastname}
+              />
+            </FormControl>
+
+            <FormControl sx={{ m: 1, width: "38ch" }}>
+              <TextField
+                label="Director Firstname"
+                name="director-firstname"
+                onChange={(e) => setDirectorFirstName(e.target.value)}
+                value={directorFirstname}
+              />
+            </FormControl>
+
+            <FormControl sx={{ m: 1, width: "38ch" }}>
+              <TextField
+                label="Director Lastname"
+                name="director-lastname"
+                onChange={(e) => setDirectorLastName(e.target.value)}
+                value={directorLastname}
+              />
+            </FormControl>
+          </div>
+
+          <div>
+            <FormControl fullWidth sx={{ m: 1 }}>
+              <Button type="submit" variant="outlined">
+                Add
+              </Button>
+            </FormControl>
+          </div>
+        </form>
+     
       </Box>
     </Container>
   );

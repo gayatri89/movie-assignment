@@ -1,10 +1,9 @@
 import { Movie } from "./Movie";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { fetchMovies, filterMoviesGen } from "../api/Api";
+import { fetchMovies } from "../api/Api";
 import { MovieGenres } from "./MovieGenres";
 import { Box, Container } from "@mui/system";
-
 
 type movieProps = {
   ageLimit: Number;
@@ -14,15 +13,16 @@ type movieProps = {
   rating: Number;
   actors: [
     {
-        firstName: string
-        lastName: string
-    }]
+      firstName: string;
+      lastName: string;
+    }
+  ];
   synopsis: String;
   year: Number;
 };
 export const MovieList = (props) => {
-   // console.log('props',props.inputValue)
-    
+  // console.log('props',props.inputValue)
+
   const [moviesData, setMoviesData] = useState([]);
   const [movieGenres, setMovieGenres] = useState([]);
 
@@ -62,7 +62,7 @@ export const MovieList = (props) => {
           {movieGenres.map((item, index) => {
             //console.log(item);
             return (
-              <li>
+              <li key={index}>
                 <MovieGenres gen={item} key={index} />
               </li>
             );
@@ -71,15 +71,17 @@ export const MovieList = (props) => {
       </Box>
 
       <Grid container spacing={4}>
-        {moviesData
-          .filter((movieItems: movieProps) => {
-             // console.log()
-             
-            return movieItems.name && movieItems.name.toLocaleLowerCase().includes(props.inputValue);
-          })
-          .map((value, index) => (
-            <Movie {...value} key={index} />
-          ))}
+        {moviesData &&
+          moviesData
+            .filter((movieItems: movieProps) => {
+              // console.log()
+
+              return (
+                movieItems.name &&
+                movieItems.name.toLocaleLowerCase().includes(props.inputValue)
+              );
+            })
+            .map((value, index) => <Movie {...value} key={index} />)}
       </Grid>
     </Container>
   );

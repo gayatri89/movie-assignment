@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
+import React, { useEffect, useState } from "react";import "./App.css";
 import { MovieList } from "./components/MovieList";
 import { Button, Container, Grid, Icon } from "@mui/material";
 import { MovieFilter } from "./components/MovieFilter";
@@ -10,9 +9,22 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Link, BrowserRouter, Route, Routes } from "react-router-dom";
+import { fetchMovies } from "./api/Api";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
+  const [count, setCount] = useState();
+
+  useEffect(() => {
+    const api = async () => {
+      const data = await fetchMovies("http://localhost:3002/api/movies");
+      console.log('count',data.length)
+      setCount(data.length)
+    };
+
+    api();
+  }, []);
+
 
   return (
     <BrowserRouter>
@@ -35,7 +47,13 @@ function App() {
             </Typography>
 
             <MovieFilter value={inputValue} setInputValue={setInputValue} />
-            <Link to="/create-movie">Add movie</Link>
+            <Link to="/create-movie">Add movie </Link>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            > {count}</Typography>
           </Toolbar>
         </Container>
       </AppBar>

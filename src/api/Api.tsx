@@ -1,25 +1,30 @@
 export const fetchMovies = async (url:string) => {
-    const response = await fetch("http://localhost:3002/api/movies") 
+    const response = await fetch(url) 
     const { data } = await response.json()
+    console.log(data.length,'count')
     return data  
 }
 
-/** 
-export const createMovie = async () => {
-  console.log('posting.....')
+
+export const createMovie = async (obj) => {
+  console.log('posting.....',obj)
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      name: 'test from client'
-    })
+    body: JSON.stringify(obj)
   }
 
-  const response = await fetch('http://localhost:3002/api/movies',requestOptions);
-  const data = await response.json();
-  console.log('post response:', data)
+  const response = await fetch('http://localhost:3002/api/movies',requestOptions)
+  const data = await response.json()
+  console.log('post response:', data['status'])
+  return data;
 }
-*/
+
+export const movieCount = async () => {
+  const response = await fetch('http://localhost:3002/api/movies') 
+  const { data } = await response.json()
+  return data  
+}
 
 export const filterMoviesGen = (arrObj) => {
     //console.log('Entry', arrObj)
