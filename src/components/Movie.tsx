@@ -13,7 +13,7 @@ type movieProps = {
     year: Number
 }
 
-export const Movies = ({actors,ageLimit,director,genres,name,rating,synopsis,year}:movieProps) => {
+export const Movie = ({actors,ageLimit,director,genres,name,rating,synopsis,year}:movieProps) => {
 
     return(
         <Grid item xs={2} sm={4} md={4}>
