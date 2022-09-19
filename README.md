@@ -12,4 +12,27 @@
 - Adding a new movie and its information to the database ±±±±±±±±
 - Because of limited time, you should focus on your strengths in your implementation. We’re more interested in how you’ve implemented things than in how much functionality you’ve had time to implement. It's totally fine that the service has very rough looks and that you haven't implemented all the use cases.
 
-- Endpoint URI: http://localhost:3002/api/movies  
+# Backend 
+
+- Bulid server using node
+- Created API endpoints for GET and POST
+- MongoDB as storage and as middleware I have used mangoose
+- I have defined the schema as per given JSON document
+- server is running on 3002 port  
+
+# API URI : http://localhost:3002/api/movies 
+
+# Frontend
+
+- For frontend I have used React JS + Typescript
+- I have used MaterialUI for quick design
+
+# Header 
+- It contain {
+     Logo: I have used dummy image
+     Search Input : filtering movies with movie name 
+     Add movie : Form UI , on action API call to store data in Mongo DB
+     Badge : to display total number of movie }
+# Body {
+    GET call for listing movies
+}
