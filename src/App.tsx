@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";import "./App.css";
+import React, { useEffect, useState } from "react";
+import "./App.css";
 import { MovieList } from "./components/MovieList";
-import { Button, Container, Grid, Icon } from "@mui/material";
+import { Container } from "@mui/material";
 import { MovieFilter } from "./components/MovieFilter";
 import { MovieForm } from "./components/MovieForm";
 
@@ -16,15 +17,15 @@ function App() {
   const [count, setCount] = useState();
 
   useEffect(() => {
+    //Displaying total Movie count
     const api = async () => {
       const data = await fetchMovies("http://localhost:3002/api/movies");
-      console.log('count',data.length)
-      setCount(data.length)
+      console.log("count", data.length);
+      setCount(data.length);
     };
 
     api();
   }, []);
-
 
   return (
     <BrowserRouter>
@@ -53,7 +54,9 @@ function App() {
               noWrap
               component="div"
               sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            > {count}</Typography>
+            >
+              {count}
+            </Typography>
           </Toolbar>
         </Container>
       </AppBar>

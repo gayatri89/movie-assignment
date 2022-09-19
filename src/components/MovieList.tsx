@@ -27,6 +27,7 @@ export const MovieList = (props) => {
   const [movieGenres, setMovieGenres] = useState([]);
 
   useEffect(() => {
+      //retrviewing the movie collection
     const api = async () => {
       const data = await fetchMovies("http://localhost:3002/api/movies");
       setMoviesData(data);
@@ -71,7 +72,9 @@ export const MovieList = (props) => {
       </Box>
 
       <Grid container spacing={4}>
-        {moviesData &&
+    
+        { //Filtering data object with movie name   
+        moviesData &&
           moviesData
             .filter((movieItems: movieProps) => {
               // console.log()
@@ -80,7 +83,7 @@ export const MovieList = (props) => {
                 movieItems.name &&
                 movieItems.name.toLocaleLowerCase().includes(props.inputValue)
               );
-            })
+            }) // movile collection passed using spred operator
             .map((value, index) => <Movie {...value} key={index} />)}
       </Grid>
     </Container>

@@ -1,18 +1,12 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
-import FilledInput from "@mui/material/FilledInput";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 
 import { createMovie } from "../api/Api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type State = {
   director: {
@@ -99,7 +93,7 @@ export function MovieForm() {
 
   let [moviname, setMoviName] = useState("");
   let [year, setYear] = useState("");
-  let [genres, setGenres] = useState('');
+  let [genres, setGenres] = useState("");
   let [ageLimit, setAgeLimit] = useState("");
   let [rating, setRating] = useState("");
   let [actorFirstname, setActorFirstName] = useState("");
@@ -107,54 +101,51 @@ export function MovieForm() {
   let [directorFirstname, setDirectorFirstName] = useState("");
   let [directorLastname, setDirectorLastName] = useState("");
   let [synopsis, setSynopsis] = useState("");
-  let [message, setMessage] = useState('');
+  let [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setData({ 
-        name: moviname,
-        year: year,
-        genres: [genres],
-        ageLimit: ageLimit,
-        rating: rating,
-        actors: [
-          {
-            firstName: actorFirstname,
-            lastName: actorLastname,
-          },
-        ],
-        director: {
-          firstName: directorFirstname,
-          lastName: directorLastname,
+    setData({
+      name: moviname,
+      year: year,
+      genres: [genres],
+      ageLimit: ageLimit,
+      rating: rating,
+      actors: [
+        {
+          firstName: actorFirstname,
+          lastName: actorLastname,
         },
-        synopsis: synopsis,
-      })
+      ],
+      director: {
+        firstName: directorFirstname,
+        lastName: directorLastname,
+      },
+      synopsis: synopsis,
+    });
     console.log("submitting...", data);
-      try {
-        const response = await createMovie(data)
-        console.log('msg',response)
-        if (response.status === 'success') {
-            setMoviName("");
-            setYear("");
-            setGenres('');
-            setAgeLimit('');
-            setRating('');
-            setSynopsis('');
-            setActorFirstName('')
-            setActorLastName('');
-            setDirectorFirstName('');
-            setDirectorLastName('');
-            setMessage("Movie created successfully");
-          } else {
-            setMessage("Some error occured");
-          }
-      } catch (err) {
-          console.log(err);
+    try {
+      const response = await createMovie(data);
+      console.log("msg", response);
+      if (response.status === "success") {
+        setMoviName("");
+        setYear("");
+        setGenres("");
+        setAgeLimit("");
+        setRating("");
+        setSynopsis("");
+        setActorFirstName("");
+        setActorLastName("");
+        setDirectorFirstName("");
+        setDirectorLastName("");
+        setMessage("Movie created successfully");
+      } else {
+        setMessage("Some error occured");
       }
-    
-    
-
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -164,9 +155,9 @@ export function MovieForm() {
           Add New Movie
         </Typography>
       </Box>
-     
+
       <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-      <div className="message">{message ? <p>{message}</p> : null}</div>
+        <div className="message">{message ? <p>{message}</p> : null}</div>
 
         <form onSubmit={(e) => handleSubmit(e)}>
           <div>
@@ -176,6 +167,8 @@ export function MovieForm() {
               onChange={(e) => setMoviName(e.target.value)}
               value={moviname}
               sx={{ m: 1, width: "25ch" }}
+              required={true}
+              error={moviname === '' ? true : false}
             />
 
             <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
@@ -184,6 +177,7 @@ export function MovieForm() {
                 name="year"
                 onChange={(e) => setYear(e.target.value)}
                 value={year}
+                required={true}
               />
             </FormControl>
 
@@ -192,6 +186,7 @@ export function MovieForm() {
                 label="Genres"
                 name="genres"
                 onChange={(e) => setGenres(e.target.value)}
+                required={true}
               />
             </FormControl>
           </div>
@@ -204,6 +199,7 @@ export function MovieForm() {
               onChange={(e) => {
                 setAgeLimit(e.target.value);
               }}
+              required={true}
             />
 
             <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
@@ -212,6 +208,7 @@ export function MovieForm() {
                 name="rating"
                 onChange={(e) => setRating(e.target.value)}
                 value={rating}
+                required={true}
               />
             </FormControl>
 
@@ -221,6 +218,7 @@ export function MovieForm() {
                 name="synopsis"
                 onChange={(e) => setSynopsis(e.target.value)}
                 value={synopsis}
+                required={true}
               />
             </FormControl>
 
@@ -230,6 +228,7 @@ export function MovieForm() {
                 name="actor-firstname"
                 onChange={(e) => setActorFirstName(e.target.value)}
                 value={actorFirstname}
+                required={true}
               />
             </FormControl>
 
@@ -239,6 +238,7 @@ export function MovieForm() {
                 name="actor-lastname"
                 onChange={(e) => setActorLastName(e.target.value)}
                 value={actorLastname}
+                required={true}
               />
             </FormControl>
 
@@ -248,6 +248,7 @@ export function MovieForm() {
                 name="director-firstname"
                 onChange={(e) => setDirectorFirstName(e.target.value)}
                 value={directorFirstname}
+                required={true}
               />
             </FormControl>
 
@@ -257,6 +258,7 @@ export function MovieForm() {
                 name="director-lastname"
                 onChange={(e) => setDirectorLastName(e.target.value)}
                 value={directorLastname}
+                required={true}
               />
             </FormControl>
           </div>
@@ -269,7 +271,6 @@ export function MovieForm() {
             </FormControl>
           </div>
         </form>
-     
       </Box>
     </Container>
   );
