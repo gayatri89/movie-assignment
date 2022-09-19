@@ -28,50 +28,6 @@ type State = {
 };
 
 export function MovieForm() {
-  /**  useEffect(() => {
-      console.log('I am inside the movie posts')
-    // POST request using fetch inside useEffect React hook
-    const dummyObj =  {
-        "director": {
-            "firstName": "dummy",
-            "lastName": "Russo"
-        },
-        "name": "Lorem: Endgame",
-        "year": 2018,
-        "genres": [
-            "Adventure",
-            "Sci-fi"
-        ],
-        "ageLimit": 12,
-        "rating": 4,
-        "actors": [
-            {
-                "firstName": "Robert",
-                "lastName": " Downey Jr."
-            },
-            {
-                "firstName": "Chris",
-                "lastName": "Evans"
-            },
-            {
-                "firstName": "Scarlett",
-                "lastName": "Johansson"
-            }
-        ],
-        "synopsis":"lorem ipsum"
-    }
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dummyObj),
-    };
-    fetch("http://localhost:3002/api/movies", requestOptions)
-      .then((response) => response.json())
-      /** .then((data) => setPostId(data.id)); */
-
-  // empty dependency array means this effect will only run once (like componentDidMount in classes)
-  //}, []); */
-
   let [data, setData] = useState({
     name: "",
     year: "",
@@ -103,6 +59,22 @@ export function MovieForm() {
   let [synopsis, setSynopsis] = useState("");
   let [message, setMessage] = useState("");
 
+  const handleClear = () => {
+    setMoviName("");
+    setYear("");
+    setGenres("");
+    setAgeLimit("");
+    setRating("");
+    setSynopsis("");
+    setActorFirstName("");
+    setActorLastName("");
+    setDirectorFirstName("");
+    setDirectorLastName("");
+    setData(null);
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -124,21 +96,11 @@ export function MovieForm() {
       },
       synopsis: synopsis,
     });
-    console.log("submitting...", data);
+
     try {
       const response = await createMovie(data);
-      console.log("msg", response);
       if (response.status === "success") {
-        setMoviName("");
-        setYear("");
-        setGenres("");
-        setAgeLimit("");
-        setRating("");
-        setSynopsis("");
-        setActorFirstName("");
-        setActorLastName("");
-        setDirectorFirstName("");
-        setDirectorLastName("");
+        handleClear();
         setMessage("Movie created successfully");
       } else {
         setMessage("Some error occured");
@@ -168,7 +130,7 @@ export function MovieForm() {
               value={moviname}
               sx={{ m: 1, width: "25ch" }}
               required={true}
-              error={moviname === '' ? true : false}
+              error={moviname === "" ? true : false}
             />
 
             <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
@@ -194,7 +156,7 @@ export function MovieForm() {
           <div>
             <TextField
               label="Age Limit"
-              name="age-limit"
+              name="ageLimit"
               sx={{ m: 1, width: "25ch" }}
               onChange={(e) => {
                 setAgeLimit(e.target.value);

@@ -24,9 +24,24 @@
   color: white;
 }
 
+.search {
+  position: relative;
+  border: 1px solid #ccc !important;
+  color: #fff !important;
+  border-radius: 5px;
+  padding: 0 5px;
+  margin: 0 10px;
+}
+
 .App-link {
   color: #61dafb;
 }
+.custom-badge {
+  float: left;
+  margin: 5px 12px;
+  padding: 0 auto;
+}
+
 
 @keyframes App-logo-spin {
   from {
